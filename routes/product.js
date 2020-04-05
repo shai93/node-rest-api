@@ -19,7 +19,7 @@ router.get('/',(req, res, next)=>{
     res.status(200)
     res.json({
         error:false,
-        data:data
+        message:data
     })
 })
 
@@ -40,13 +40,13 @@ router.get('/:productid',(req, res, next)=>{
             product:product
         })
     }else{
-        res.json({
-            error:true,
-            message:`Product with id ${id} not found`
-        })
+        const error = new Error(`Product with id ${id} not found`)
+        error.status = 500;
+        next(error)
     }
 
 })
+
 
 router.post('/',(req, res, next)=>{
     res.status(200)
