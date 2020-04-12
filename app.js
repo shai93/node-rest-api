@@ -2,7 +2,9 @@ const express = require('express');
 const app = express();
 const productrouter = require('./routes/product');
 const mongoose  = require('mongoose');
+const bodyParser = require('body-parser')
 
+app.use(bodyParser.json());
 
 mongoose.connect(
     "mongodb+srv://admin:admin@cluster0-hil44.mongodb.net/test?retryWrites=true&w=majority", 
@@ -12,7 +14,6 @@ mongoose.connect(
 }).catch((error)=>{
     console.log("Error while connecting  to DB...", error)
 })
-
 
 app.use('/products', productrouter)
 
