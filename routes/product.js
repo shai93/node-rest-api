@@ -95,7 +95,7 @@ router.get('/:productid',(req, res, next)=>{
 router.post('/',async (req, res, next)=>{
     const product = new Product(req.body);
     try{
-       await product.product.save()
+       await product.save()
        res.status(200)
         res.json({
             error:false,
@@ -103,9 +103,63 @@ router.post('/',async (req, res, next)=>{
         })
     }catch(e){
         const error = new Error(e.message)
-        error.status = 500;
+        if(e.name == "ValidationError"){
+            error.status = 400;
+        }else{
+            error.status = 500;
+        }
         next(error)
     }
+})
+
+router.delete('/:productid', (req,res,next)=>{
+    const productId = req.params.productid
+    Product.remove({_id:productId}).exec().then(()=>{
+        res.status(200)
+        res.json({
+            error:false,
+            message:"Successfully Deleted"
+        })
+    }).catch((e)=>{
+        const error = new Error(e.message)
+        error.status = 500;
+        next(error)
+    })
+})
+
+router.put('/:productid', (req,res,next)=>{
+    const productId = req.params.productid;
+    
+    Product.update({_id:productId}, {$set:req.body}).exec().then(()=>{
+        res.status(200)
+        res.json({
+            error:false,
+            message:"Successfully Updated"
+        })
+    }).catch((e)=>{
+        const error = new Error(e.message)
+        error.status = 500;
+        next(error)
+    })
+})
+
+
+router.patch('/:productid', (req,res,next)=>{
+    const productId = req.params.productid;
+    let obj = {};
+    obj[req.body.propName] = req.body.propValue
+
+    Product.update({_id:productId}, {$set:obj}).exec().then(()=>{
+        res.status(200)
+        res.json({
+            error:false,
+            message:"Successfully Updated"
+        })
+    }).catch((e)=>{
+        const error = new Error(e.message)
+        error.status = 500;
+        next(error)
+    })
 })
 
 module.exports = router
