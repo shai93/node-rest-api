@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const productrouter = require('./routes/product');
+const orderrouter = require('./routes/order');
 const mongoose  = require('mongoose');
 const bodyParser = require('body-parser')
 
@@ -15,7 +16,8 @@ mongoose.connect(
     console.log("Error while connecting  to DB...", error)
 })
 
-app.use('/products', productrouter)
+app.use('/products', productrouter);
+app.use('/orders', orderrouter);
 
 app.use((req,res,next)=>{
     const error =  new Error('Not valid');
