@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const productrouter = require('./routes/product');
 const orderrouter = require('./routes/order');
+const userrouter = require('./routes/user');
+const loginrouter = require('./routes/login');
 const mongoose  = require('mongoose');
 const bodyParser = require('body-parser')
 
@@ -18,6 +20,8 @@ mongoose.connect(
 
 app.use('/products', productrouter);
 app.use('/orders', orderrouter);
+app.use('/user', userrouter);
+app.use('/login', loginrouter);
 
 app.use((req,res,next)=>{
     const error =  new Error('Not valid');
