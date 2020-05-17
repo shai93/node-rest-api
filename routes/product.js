@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Product = require('../model/product');
+const AuthMiddleware = require('../jwt_middleware');
 const data = [
     {
         id:1,
@@ -18,7 +19,7 @@ const data = [
 
 // exec
 
-router.get('/',async(req, res, next)=>{
+router.get('/',AuthMiddleware, async(req, res, next)=>{
     if(Object.keys(req.query).length > 0){
         Product.findById(req.query.id).exec().then((product)=>{
             res.status = 200

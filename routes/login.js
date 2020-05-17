@@ -21,7 +21,7 @@ router.post('/',async (req, res, next)=>{
                     email:req.body.email,
                     userid:user[0]['_id']
                 }
-                let secretOrPrivateKey = "NODERESTAPI"
+                let secretOrPrivateKey = process.env.SECRETKEY
                 let options = {
                     expiresIn:"1h"
                 }

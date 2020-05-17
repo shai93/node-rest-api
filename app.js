@@ -5,10 +5,11 @@ const orderrouter = require('./routes/order');
 const userrouter = require('./routes/user');
 const loginrouter = require('./routes/login');
 const mongoose  = require('mongoose');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const AuthMiddleware = require('./jwt_middleware');
+require('dotenv').config()
 
 app.use(bodyParser.json());
-
 mongoose.connect(
     "mongodb+srv://admin:admin@cluster0-hil44.mongodb.net/test?retryWrites=true&w=majority", 
     { useNewUrlParser: true })
@@ -17,7 +18,7 @@ mongoose.connect(
 }).catch((error)=>{
     console.log("Error while connecting  to DB...", error)
 })
-
+app.use(AuthMiddleware);
 app.use('/products', productrouter);
 app.use('/orders', orderrouter);
 app.use('/user', userrouter);
